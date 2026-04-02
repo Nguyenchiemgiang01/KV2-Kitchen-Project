@@ -1,0 +1,39 @@
+-----------------------------------------------------------Lỗi 01:-------------------------------------------------------------
+
+Lỗi này rất phổ biến trên Windows. Nguyên nhân là InsightFace có một phần code C++ cần compiler để build, nhưng máy bạn chưa có Microsoft C++ Build Tools.
+Có 2 cách xử lý, theo thứ tự ưu tiên:
+
+Cách 1 — Cài Microsoft C++ Build Tools (khuyến nghị)
+Đây là cách chuẩn nhất, cài một lần dùng mãi cho mọi thư viện Python có C extension.
+Truy cập link sau và tải về:
+https://visualstudio.microsoft.com/visual-cpp-build-tools/
+Chạy file cài đặt, trong màn hình chọn components chỉ cần tick vào "Desktop development with C++", phần còn lại bỏ trống. Dung lượng khoảng 3 đến 4 GB.
+Sau khi cài xong, khởi động lại máy, rồi chạy lại:
+bashpip install insightface onnxruntime opencv-python numpy
+
+Cách 2 — Dùng file wheel pre-built (không cần cài Build Tools)
+Nếu không muốn cài Build Tools, dùng file wheel đã được build sẵn cho Windows:
+bashpip install insightface --only-binary=:all:
+Nếu không có wheel sẵn trên PyPI thì dùng cách thay thế — cài từ unofficial wheels:
+bash# Bước 1: Cài các dependency trước
+pip install numpy opencv-python onnxruntime
+
+# Bước 2: Tải file wheel phù hợp với Python 3.10 Windows 64-bit
+# Truy cập: https://github.com/Gourieff/Assets/tree/main/Insightface
+# Tải file: insightface-0.7.3-cp310-cp310-win_amd64.whl
+
+# Bước 3: Cài từ file wheel vừa tải
+pip install insightface-0.7.3-cp310-cp310-win_amd64.whl
+
+Cách 3 — Dùng môi trường Linux thay vì Windows (tốt nhất cho production)
+Nhìn vào log thấy bạn đang cài trên Windows (win-amd64-cpython-310). Trong thực tế, server nên chạy trên Linux (Ubuntu 22.04) vì InsightFace và hầu hết thư viện AI được tối ưu cho Linux, không có vấn đề build C extension này.
+Nếu bạn đang dùng Windows để phát triển, có thể dùng WSL2 (Windows Subsystem for Linux):
+bash# Mở PowerShell với quyền Admin, chạy lệnh sau
+wsl --install
+
+# Sau khi WSL2 cài xong, mở Ubuntu terminal và chạy
+sudo apt update && sudo apt install python3-pip python3-venv -y
+pip3 install insightface onnxruntime opencv-python numpy fastapi uvicorn
+Trên WSL2/Linux cài insightface không gặp lỗi này.
+
+--------------------------------------------------------------------------------------------------------------------------------

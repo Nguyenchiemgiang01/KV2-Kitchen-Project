@@ -1,0 +1,5 @@
+pip install insightface onnxruntime
+pip install opencv-python numpy
+pip install fastapi uvicorn python-multipart
+pip install sqlalchemy pymysql
+pip install python-dotenv
